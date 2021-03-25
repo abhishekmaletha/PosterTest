@@ -1,9 +1,12 @@
 <template>
+<v-app>
   <div class="feedBackground">
-    <v-container class="mb-6">
-      <v-row no-gutters style="height: 100%">
-        <v-col v-for="p in feed" :key="p.id" sm="4">
-          <v-card class="pa-2 singlePost cyan" outlined shaped>
+    <div class="addPostDiv container"><AddPost /></div>
+    <div class="container">
+    <v-container class="mb-6 ">
+      <v-row no-gutters style="height: 100%;">
+        <v-col v-for="p in allPosts" :key="p.id" sm="4">
+          <v-card class="pa-2  singlePost cyan " outlined shaped>
             <div>
               <section class="postTitle">
                 <div>
@@ -25,27 +28,31 @@
         </v-col>
       </v-row>
     </v-container>
+    </div>
   </div>
+</v-app>
 </template>
 
-
 <script>
-import fx from "@/data/feed.js";
+import AddPost from "../components/addPost"
+import { mapGetters, mapActions } from  "vuex";
 export default {
-  name: "Feed",
-  data: function () {
-    return {
-      feed: [],
-    };
+  name: "posts",
+  components: {AddPost},
+  methods: {
+    ...mapActions(['fetchPosts'])
   },
-  mounted: async function () {
-    this.feed = await fx();
-  },
+  computed: mapGetters(["allPosts"]),
+  created() {
+    this.fetchPosts();
+  }
 };
 </script>
 
-
 <style scoped>
+.addPostDiv{
+  background-color: cornsilk;
+}
 .feedBackground {
   background-image: url(../assets/logo.jpg);
   background-attachment: fixed;
